@@ -1,0 +1,31 @@
+
+/* 正しく表示されるまでディスプレイ非表示 */
+[v-cloak] {
+  display: none;
+}
+
+
+ #app ul {
+  list-style:none;
+}
+
+#app tr > td.done {
+  text-decoration: line-through;
+  color: #bbb;
+}
+
+.listSelect {
+  margin: 10px 0;
+}
+
+.deleteCommand {
+  font-size: 12px;
+  cursor: pointer;
+  color: blue;
+}
+
+.info {
+  color: #bbb;
+  font-size: 12px;
+  font-weight: normal;
+}

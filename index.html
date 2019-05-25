@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>5seconds</title>
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <div id="app">
+
+      <h1>
+        ToDo List
+        <span class="info">({{ remaining }}/{{ todos.length }})</span>
+      </h1>
+
+      <!-- 表示切り替え用ラジオボタンの設置 -->
+      <form class="listSelect" >
+        <input type="radio" id="allList" name="listSelect" value="alllist-v" v-model="status"><label for="allList">すべて</label>
+        <input type="radio" id="doingList" name="listSelect" value="doinglist-v" v-model="status"><label for="doingList">作業中</label>
+        <input type="radio" id="doneList" name="listSelect" value="donelist-v" v-model="status"><label for="doneList">完了</label>
+      </form>
+
+      <!-- リストへタスク一覧表示 -->
+      <table v-cloak>
+        <thead>
+          <tr>
+            <th>ID</th><th>コメント</th><th>状態</th>
+          </tr>
+        </thead>
+        <tbody v-if="todos.length">  <!-- タスクがあるときのみ表示 -->
+          <!-- <tr v-for="(todo,index) in todos"> -->
+          <tr v-for="(todo,index) in todosDisplay">  <!-- V-forにより、タスク格納配列を表示 -->
+            <td v-bind:class="{ done: todo.isDone }">{{ todo.id }}</td>
+            <td v-bind:class="{ done: todo.isDone }">{{ todo.item }}</td>
+            <td>
+              <!-- <input type="checkbox" v-model="todo.isDone"> //チェックボックス -->
+              <!-- <input type="button" v-bind:value="btnStatus" @click="chanStatus(todo.id)"> -->
+              <input type="button" v-bind:value="todo.isDone ? ' 完了 ':'作業中'" @click="chanStatus(todo.id)">
+              <span @click="deleteItem(todo.id)" class="deleteCommand"> [削除]</span>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>  <!-- タスクが無いときのみ表示 -->
+          <tr><td></td><td>Nothing to do!</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <!-- 新規タスク追加のテキスト＆ボタンのメソッド -->
+      <h2>新規タスク追加</h2>
+      <form v-on:submit.prevent>
+        <input type="text" v-model="newItem">
+        <button v-on:click="addTasks">追加</button>
+      </form>
+
+      <br>
+      <br>
+      <p>確認用「Vueインスタンス：data」の中身</p>
+      <p>{{ $data }}</p>
+    </div>
+
+    <!-- vue.jsの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

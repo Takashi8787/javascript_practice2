@@ -16,27 +16,49 @@ firebase.initializeApp(firebaseConfig);
 // ここからソースコード
 
 const db = firebase.firestore();
-console.log(db);
-console.log("ok01");
 // db.settings({
 //   timestampsInSnapshots: true
 // });
 
 const collection = db.collection('messages');
-console.log(collection);
-console.log("collection ok");
+// console.log(collection);
+// console.log("collection ok");
 
-collection.add({
-  message: 'test'
-})
-.then(doc => {
-  console.log(`${doc.id} added!`);
-  console.log("ok04");
-})
-.catch(error => {
-  console.log(error);
+// フォームのDOM作成
+const message = document.getElementById('message');
+const messages = document.getElementById('messages');
+const form = document.querySelector('form');
+
+collection.orderBy('created').get().then(snapshot => {
+  snapshot.forEach(doc => {
+    const li = document.createElement('li');
+    li.textContent = doc.data().message;
+    messages.appendChild(li);
+  });
 });
 
 
-console.log(collection);
-console.log("collection ok2");
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  
+  const li = document.createElement('li');
+  li.textContent = message.value;
+  messages.appendChild(li);
+
+
+  collection.add({
+    message: message.value,
+    created: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(doc => {
+    console.log(`${doc.id} added!`);
+    message.value = '';
+    message.focus();
+  })
+  .catch(error => {
+    console.log(error);
+  });
+});
+
+message.focus();
+

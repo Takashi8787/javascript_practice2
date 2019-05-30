@@ -26,15 +26,12 @@ var app = new Vue({
         // 次回のidナンバーを更新
         this.idFlg++;
       // タスク未入力なら終了  
-      }else{
-        return;
       }; 
     },
     // 【処理】削除ボタン押下の処理
     deleteItem: function(id){
       if(confirm(' Are you sure? ID:' + id)){
         // 削除対象IDを持つデータのみfilterで除く
-        // this.todos = this.todos.filter(function(todo){return todo.id != id;});
         this.todos = this.todos.filter( todo => todo.id != id );
       };
     },
@@ -45,16 +42,6 @@ var app = new Vue({
         if( this.todos[i].id === id ){
           // isDoneの反転と表示文字の変更
           this.todos[i].isDone = !this.todos[i].isDone;
-          // switch (this.todos[i].isDone) {
-          //   case false:
-          //     this.todos[i].isDone = true;
-          //     break;
-          //   case true:
-          //     this.todos[i].isDone = false;
-          //     break;
-          //   default:
-          //     console.log("エラーが発生しました。");
-          // }
         }
       };
     },
@@ -67,8 +54,10 @@ var app = new Vue({
       // ラジオボタンの状態によって、表示するtodos配列を返す
       if( this.status === 'all-list-v'){
         return this.todos;
-      } else if ( this.status === 'doinglist-v') {return this.todos.filter( todo => !todo.isDone);
-      } else if ( this.status === 'donelist-v'){return this.todos.filter( todo => todo.isDone);
+      } else if ( this.status === 'doing-list-v') {
+        return this.todos.filter( todo => !todo.isDone);
+      } else if ( this.status === 'donelist-v'){
+        return this.todos.filter( todo => todo.isDone);
       } else {console.log("エラーが発生しました");
       };
     },

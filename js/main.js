@@ -13,6 +13,38 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+// ログイン機能
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+var uiConfig = {
+  callbacks: {
+    signInSuccess: function(currentUser, credential, redirectUrl) {
+      // サインイン成功時のコールバック関数
+      // 戻り値で自動的にリダイレクトするかどうかを指定
+      return true;
+    },
+    uiShown: function() {
+      // FirebaseUIウィジェット描画完了時のコールバック関数
+      // 読込中で表示しているローダー要素を消す
+      document.getElementById('loader').style.display = 'none';
+    }
+  },
+  // リダイレクトではなく、ポップアップでサインインフローを表示
+  signInFlow: 'popup',
+  signInSuccessUrl: '<url-to-redirect-to-on-success>',
+  signInOptions: [
+    // サポートするプロバイダ(メールアドレス)を指定
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  ],
+  // Terms of service url.
+  tosUrl: '<your-tos-url>'
+};
+
+ui.start('#firebaseui-auth-container', uiConfig);
+// ログイン機能END
+
+
+
 // ここからソースコード
 
 const db = firebase.firestore();
@@ -27,6 +59,8 @@ const collection = db.collection('messages');
 // フォームのDOM作成
 const message = document.getElementById('message');
 const messages = document.getElementById('messages');
+const login = document.getElementById('login');
+const logout = document.getElementById('logout');
 const form = document.querySelector('form');
 
 collection.orderBy('created').get().then(snapshot => {
@@ -35,6 +69,31 @@ collection.orderBy('created').get().then(snapshot => {
     li.textContent = doc.data().message;
     messages.appendChild(li);
   });
+});
+
+login.addEventListener('click', e => {
+  // firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+  //   // Handle Errors here.
+  //   var errorCode = error.code;
+  //   var errorMessage = error.message;
+  //   // ...
+
+  // NEW
+  // var config = {
+  //   apiKey: "<API_KEY>",
+  //   authDomain: "<PROJECT_ID>.firebaseapp.com",
+  // };
+  // console.log("aaa");
+  // firebase.initializeApp(config);
+  // console.log("bbb");
+
+
+  // new
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+
 });
 
 

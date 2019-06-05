@@ -29,3 +29,13 @@
   font-size: 12px;
   font-weight: normal;
 }
+
+
+
+h1 > button {
+  float: right;
+}
+
+.hidden {
+  display: none;
+}
